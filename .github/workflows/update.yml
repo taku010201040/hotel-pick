@@ -1,0 +1,44 @@
+name: Update hotel data
+
+on:
+  schedule:
+    # 毎日 22:00 UTC = 翌 07:00 JST (クーポン/料金の軽更新)
+    - cron: '0 22 * * *'
+    # 毎週日曜 18:00 UTC = 月曜 03:00 JST (全件の詳細を重更新)
+    - cron: '0 18 * * 0'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4
+      - name: Decide mode
+        id: mode
+        run: |
+          if [ "${{ github.event.schedule }}" = "0 18 * * 0" ]; then
+            echo "script=full_update.py" >> "$GITHUB_OUTPUT"
+          else
+            echo "script=hotel_auto_update.py" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Run update
+        run: python ${{ steps.mode.outputs.script }}
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add hotel-pick.html hotel_check_report.md
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "chore: auto update hotel data (${{ steps.mode.outputs.script }})"
+            git push
+          fi
