@@ -57763,6 +57763,25 @@
       }
     });
 
+    // 同じ住所/番地で座標が完全に一致するホテルはピンが重なり、
+    // 1つ除外しても別のピンが残って見えるため、画面上だけずらす
+    const coordGroups = {};
+    HOTELS.forEach(h => {
+      const k = Number(h.lat).toFixed(5) + ',' + Number(h.lon).toFixed(5);
+      (coordGroups[k] = coordGroups[k] || []).push(h);
+    });
+    Object.keys(coordGroups).forEach(k => {
+      const g = coordGroups[k];
+      if(g.length < 2) return;
+      g.forEach((h, i) => {
+        if(h.dx !== undefined || h.dy !== undefined) return;
+        const ang = i * 2.39996323;
+        const r = 17 * Math.sqrt(i);
+        h.dx = Math.round(Math.cos(ang) * r);
+        h.dy = Math.round(Math.sin(ang) * r);
+      });
+    });
+
     HOTELS.forEach(h => {
       const m = L.marker([h.lat, h.lon], { icon: pinIcon(h), riseOnHover:true, title:h.name }).addTo(map);
       m.bindTooltip(h.name, {direction:'top', offset:[0,-14]});
