@@ -68,6 +68,21 @@
 
   select{width:100%;border:1px solid var(--line2);background:#fff;border-radius:10px;padding:8px 10px;font-size:13px;cursor:pointer}
 
+  /* iOS風 時刻ホイール */
+  .timewheel{position:relative;height:132px;border-radius:12px;background:linear-gradient(#fff,#f8f7f5);border:1px solid var(--line2);overflow:hidden}
+  .timewheel::before,.timewheel::after{content:"";position:absolute;left:0;right:0;height:46px;z-index:2;pointer-events:none}
+  .timewheel::before{top:0;background:linear-gradient(#fff,transparent)}
+  .timewheel::after{bottom:0;background:linear-gradient(transparent,#f8f7f5)}
+  .wheel-band{position:absolute;top:50px;left:6px;right:6px;height:32px;border-radius:8px;background:rgba(0,0,0,.05);z-index:1;pointer-events:none}
+  .wheel-cols{display:flex;height:100%;align-items:center;justify-content:center;gap:2px}
+  .wheel-col{height:100%;width:64px;padding:50px 0;box-sizing:border-box;overflow-y:auto;scroll-snap-type:y mandatory;scrollbar-width:none;-ms-overflow-style:none;position:relative;z-index:3}
+  .wheel-col::-webkit-scrollbar{display:none}
+  .wheel-item{height:32px;line-height:32px;text-align:center;font-size:17px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--muted);scroll-snap-align:center;cursor:pointer;user-select:none}
+  .wheel-item.near{color:#44403c}
+  .wheel-item.active{color:var(--accent);font-weight:800;font-size:19px}
+  .wheel-sep{font-size:20px;font-weight:700;color:var(--muted);z-index:3;line-height:132px}
+  .wheel-none{margin-top:6px}
+
   .switch{display:flex;align-items:center;gap:9px;font-size:12.5px;cursor:pointer;padding:5px 0}
   .switch input{position:absolute;opacity:0;pointer-events:none}
   .switch .track{width:36px;height:20px;border-radius:999px;background:#d6d3d1;position:relative;transition:.18s;flex:none}
@@ -321,12 +336,17 @@
 
       <div class="group">
         <h3>入室時刻</h3>
-        <select id="checkinSel" aria-label="入室時刻">
-          <option value="21:00">21:00 までに入る</option>
-          <option value="22:00" selected>22:00 までに入る</option>
-          <option value="23:00">23:00 までに入る</option>
-          <option value="">指定しない</option>
-        </select>
+        <input type="hidden" id="checkinSel" value="22:00">
+        <div class="timewheel" aria-label="入室時刻ホイール">
+          <div class="wheel-band"></div>
+          <div class="wheel-cols">
+            <div class="wheel-col" id="wheelHour"></div>
+            <div class="wheel-sep">:</div>
+            <div class="wheel-col" id="wheelMin"></div>
+          </div>
+        </div>
+        <button class="btn ghost wheel-none" id="checkinNone" type="button">入室時刻を指定しない</button>
+        <p id="checkinOut" style="font-size:11px;color:var(--muted);margin:6px 0 0">22:00 までに入る</p>
       </div>
 
       <div class="group">
@@ -371,6 +391,29 @@
           <button class="chip small" type="button" data-am="food" aria-pressed="false">フード</button>
           <button class="chip small" type="button" data-am="videos" aria-pressed="false">VOD/DVD</button>
           <button class="chip small" type="button" data-am="outside" aria-pressed="false">外出OK</button>
+          <button class="chip small" type="button" data-am="handMassage" aria-pressed="false">ハンドマッサージ</button>
+          <button class="chip small" type="button" data-am="massageChair" aria-pressed="false">マッサージチェア</button>
+          <button class="chip small" type="button" data-am="cosplayFree" aria-pressed="false">コスプレ無料</button>
+          <button class="chip small" type="button" data-am="cosplaySale" aria-pressed="false">コスプレ販売</button>
+          <button class="chip small" type="button" data-am="toysSale" aria-pressed="false">玩具販売</button>
+          <button class="chip small" type="button" data-am="lotion" aria-pressed="false">ローション</button>
+          <button class="chip small" type="button" data-am="mat" aria-pressed="false">マット</button>
+          <button class="chip small" type="button" data-am="beauty" aria-pressed="false">美顔器/ドライヤー</button>
+          <button class="chip small" type="button" data-am="headspa" aria-pressed="false">ヘッドスパ</button>
+          <button class="chip small" type="button" data-am="bigTV" aria-pressed="false">大型TV</button>
+          <button class="chip small" type="button" data-am="bathTV" aria-pressed="false">浴室TV</button>
+          <button class="chip small" type="button" data-am="fridge" aria-pressed="false">冷蔵庫</button>
+          <button class="chip small" type="button" data-am="microwave" aria-pressed="false">電子レンジ</button>
+          <button class="chip small" type="button" data-am="charger" aria-pressed="false">充電器</button>
+          <button class="chip small" type="button" data-am="bathrobe" aria-pressed="false">バスローブ</button>
+          <button class="chip small" type="button" data-am="amenities" aria-pressed="false">アメニティ</button>
+          <button class="chip small" type="button" data-am="game" aria-pressed="false">ゲーム</button>
+          <button class="chip small" type="button" data-am="projector" aria-pressed="false">プロジェクター</button>
+          <button class="chip small" type="button" data-am="stoneBath" aria-pressed="false">岩盤浴</button>
+          <button class="chip small" type="button" data-am="footbath" aria-pressed="false">足湯</button>
+          <button class="chip small" type="button" data-am="waterbed" aria-pressed="false">ウォーターベッド</button>
+          <button class="chip small" type="button" data-am="drinkFree" aria-pressed="false">飲み物無料</button>
+          <button class="chip small" type="button" data-am="solo" aria-pressed="false">1名OK</button>
         </div>
       </div>
 
@@ -53483,6 +53526,71 @@
 
   function tier(p){ return p <= 6000 ? 'low' : (p <= 8000 ? 'mid' : 'high'); }
 
+  /* ---------- iOS風 時刻ホイール ---------- */
+  const HOURS = Array.from({length:24}, (_,i) => String(i).padStart(2,'0'));
+  const MINS = ['00','15','30','45'];
+  const ITEM_H = 32;
+  let wheelIdx = {h:22, m:0}, wheelTimer = null, wheelSyncing = false;
+  function paintWheel(){
+    [['#wheelHour',HOURS,wheelIdx.h],['#wheelMin',MINS,wheelIdx.m]].forEach(function(a){
+      const col = $(a[0]);
+      if(!col) return;
+      Array.from(col.children).forEach(function(el,i){
+        el.classList.toggle('active', i === a[2]);
+        el.classList.toggle('near', Math.abs(i - a[2]) <= 1);
+      });
+    });
+  }
+  function commitWheel(){
+    const v = HOURS[wheelIdx.h] + ':' + MINS[wheelIdx.m];
+    const el = $('#checkinSel');
+    if(el.value !== v){
+      el.value = v;
+      el.dispatchEvent(new Event('change', {bubbles:true}));
+    }
+    $('#checkinOut').textContent = v + ' までに入る';
+  }
+  function buildWheel(){
+    const wh = $('#wheelHour'), wm = $('#wheelMin');
+    if(!wh || !wm) return;
+    wh.innerHTML = HOURS.map(h => '<div class="wheel-item" data-v="'+h+'">'+h+'</div>').join('');
+    wm.innerHTML = MINS.map(m => '<div class="wheel-item" data-v="'+m+'">'+m+'</div>').join('');
+    function attach(col, list, key){
+      col.addEventListener('scroll', function(){
+        if(wheelSyncing) return;
+        wheelIdx[key] = Math.max(0, Math.min(list.length-1, Math.round(col.scrollTop / ITEM_H)));
+        paintWheel();
+        clearTimeout(wheelTimer);
+        wheelTimer = setTimeout(commitWheel, 120);
+      });
+      col.addEventListener('click', function(e){
+        const it = e.target.closest('.wheel-item'); if(!it) return;
+        const i = Array.from(col.children).indexOf(it);
+        wheelIdx[key] = i;
+        col.scrollTo({top:i*ITEM_H, behavior:'smooth'});
+        paintWheel();
+        clearTimeout(wheelTimer);
+        wheelTimer = setTimeout(commitWheel, 250);
+      });
+    }
+    attach(wh, HOURS, 'h');
+    attach(wm, MINS, 'm');
+  }
+  function setWheel(v){
+    if(!v){ $('#checkinOut').textContent = '指定なし'; return; }
+    const p = String(v).split(':');
+    const hi = Math.max(0, HOURS.indexOf(p[0]));
+    const mi = Math.max(0, MINS.indexOf(p[1]));
+    wheelIdx.h = hi; wheelIdx.m = mi;
+    wheelSyncing = true;
+    const wh = $('#wheelHour'), wm = $('#wheelMin');
+    if(wh) wh.scrollTop = hi * ITEM_H;
+    if(wm) wm.scrollTop = mi * ITEM_H;
+    setTimeout(function(){ wheelSyncing = false; }, 60);
+    paintWheel();
+    $('#checkinOut').textContent = v + ' までに入る';
+  }
+
   /* ---------- 都道府県 / 地域 ---------- */
   const PREF_ORDER = ['東京都','神奈川県','京都府','大阪府','北海道','青森県','岩手県','宮城県','秋田県','山形県','福島県','茨城県','栃木県','群馬県','埼玉県','千葉県','新潟県','富山県','石川県','福井県','山梨県','長野県','岐阜県','静岡県','愛知県','三重県','滋賀県','兵庫県','奈良県','和歌山県','鳥取県','島根県','岡山県','広島県','山口県','徳島県','香川県','愛媛県','高知県','福岡県','佐賀県','長崎県','熊本県','大分県','宮崎県','鹿児島県','沖縄県'];
   const PREF_ALIASES = {'東京':'東京都','神奈川':'神奈川県','京都':'京都府','大阪':'大阪府'};
@@ -53727,6 +53835,11 @@
     else t.push('<span class="tag warn">現金のみ</span>');
     if(h.web) t.push('<span class="tag">ネット予約</span>');
     if(h.parking) t.push('<span class="tag">駐車場</span>');
+    if(h.wifi) t.push('<span class="tag">Wi-Fi</span>');
+    if(h.handMassage) t.push('<span class="tag">ハンドマッサージ</span>');
+    if(h.cosplayFree) t.push('<span class="tag">コスプレ無料</span>');
+    if(h.beauty) t.push('<span class="tag">美顔器</span>');
+    if(h.bigTV) t.push('<span class="tag">大型TV</span>');
     if(autoPrice(h._base || h)) t.push('<span class="tag">料金自動取得</span>');
     const cin0 = timeOf(h, 'in');
     if(cin0 && toMin(cin0) <= toMin('21:00')) t.push('<span class="tag ok">21時IN可</span>');
@@ -54174,6 +54287,7 @@
     $('#walkRange').value = state.maxWalk;
     $('#walkOut').textContent = state.maxWalk + '分';
     $('#checkinSel').value = state.checkin;
+    setWheel(state.checkin);
     $('#couponToggle').checked = state.coupon;
     $('#showExcluded').checked = state.showExcluded;
     $('#sortSel').value = state.sort;
@@ -54260,6 +54374,13 @@
     });
     $('#checkinSel').addEventListener('change', function(){
       state.checkin = this.value; save(); renderAll(); fitVisible(true);
+    });
+    $('#checkinNone').addEventListener('click', function(){
+      state.checkin = '';
+      $('#checkinSel').value = '';
+      $('#checkinOut').textContent = '指定なし';
+      save(); renderAll(); fitVisible(true);
+      toast('入室時刻の指定を解除しました');
     });
     $('#couponToggle').addEventListener('change', function(){
       state.coupon = this.checked; save(); renderAll();
@@ -54386,6 +54507,7 @@
      起動
      ========================================================= */
   load();
+  buildWheel();
   bind();
   initMap();
   renderAll();

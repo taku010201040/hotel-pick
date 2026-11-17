@@ -9,15 +9,47 @@ HTML_PATH = os.path.join(ROOT, "hotel-pick.html")
 UA = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/126 Safari/537.36"}
 TAG = re.compile(r"<[^>]+>"); WS = re.compile(r"\s+")
 DAY_KEYS = ("weekday", "fri", "sat", "eve", "sun")
-AMENITY_KEYS = ["wifi","sauna","jacuzzi","karaoke","openair","massage","washboard","nonsmoke","three","sameSex","vapor","food","videos","outside"]
+AMENITY_KEYS = ['wifi','sauna','jacuzzi','karaoke','openair','massageChair','handMassage','cosplayFree','cosplaySale','toysSale','lotion','mat','beauty','headspa','washer','nonsmoke','three','sameSex','solo','food','drinkFree','videos','bigTV','bathTV','fridge','microwave','charger','bathrobe','amenities','outside','parking','card','web','game','projector','stoneBath','footbath','waterbed','jacuzziBath']
 KW = {
- "wifi":["wi-fi","wifi","wireless lan","フリーwi-fi","無料wi-fi"],"sauna":["サウナ"],
- "jacuzzi":["ジェットバス","ブロアバス","ジャグジー"],"karaoke":["カラオケ"],
- "openair":["露天風呂","露天"],"massage":["マッサージチェア","電気マッサージ器","ハンドマッサージャー"],
- "washboard":["和室"],"nonsmoke":["禁煙"],"three":["3名以上","３人以上","3人以上"],
- "sameSex":["同性利用可","女性同士"],"vapor":["美顔器","スチーマー","美容機器"],
- "food":["ルームサービス","フードメニュー","朝食","モーニング","食事"],
- "videos":["vod","ビデオオンデマンド","ブルーレイ","dvd"],"outside":["外出ok","外出可"]
+ "wifi":["wi-fi","wifi","wireless lan","フリーwi-fi","無料wi-fi","lan"],
+ "sauna":["サウナ"],
+ "jacuzzi":["ジェットバス","ブロアバス","ジャグジー","マイクロバブル"],
+ "karaoke":["カラオケ"],
+ "openair":["露天風呂","露天"],
+ "massageChair":["マッサージチェア"],
+ "handMassage":["ハンドマッサージャー","電気マッサージ器","マッサージャー"],
+ "cosplayFree":["コスプレ無料","無料レンタルコスプレ","コスプレ１着目無料","コスプレ1着目無料","コスプレ無料レンタル"],
+ "cosplaySale":["コスプレ販売","コスチューム販売"],
+ "toysSale":["玩具販売","玩具（販売）","玩具(販売)"],
+ "lotion":["ローション"],
+ "mat":["マット（貸出）","マット(貸出)","ローションマット","マット貸出"],
+ "beauty":["美顔器","スチーマー","美容機器","ReFa","ドライヤー","ヘアアイロン"],
+ "headspa":["ヘッドスパ"],
+ "washer":["和室"],
+ "nonsmoke":["禁煙ルーム","禁煙"],
+ "three":["3名以上利用可","３人以上利用可","3人以上利用可","３名以上"],
+ "sameSex":["同性利用可","女性同士","レズ"],
+ "solo":["お一人様OK","一人利用可","1名利用可","お一人様利用可"],
+ "food":["ルームサービス","フードメニュー","朝食","モーニング","食事","お茶","缶コーヒー"],
+ "drinkFree":["アルコール1杯無料","アルコール一杯無料","ウェルカムドリンク","ドリンク無料","飲み物無料"],
+ "videos":["vod","ビデオオンデマンド","ブルーレイ","dvd","dvdプレーヤー"],
+ "bigTV":["大型tv","大型テレビ","50インチ","55インチ","65型","75インチ"],
+ "bathTV":["浴室tv","浴室テレビ"],
+ "fridge":["冷蔵庫"],
+ "microwave":["電子レンジ"],
+ "charger":["充電器","usb","type-c","iphone充電"],
+ "bathrobe":["バスローブ"],
+ "amenities":["アメニティ","シャンプー","化粧品","タオル","歯ブラシ"],
+ "outside":["外出ok","外出可"],
+ "parking":["駐車場"],
+ "card":["カード可","クレジットカード","visa","mastercard","jcb"],
+ "web":["ネット予約","web予約","予約可"],
+ "game":["tvゲーム","ゲーム機","nintendo switch","プレステ"],
+ "projector":["プロジェクター"],
+ "stoneBath":["岩盤浴"],
+ "footbath":["足湯"],
+ "waterbed":["ウォーターベッド"],
+ "jacuzziBath":["ジェットバス"],
 }
 
 def clean(s): return WS.sub(" ", html.unescape(TAG.sub(" ", s))).strip()
